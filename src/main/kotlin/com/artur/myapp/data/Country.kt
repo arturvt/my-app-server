@@ -11,4 +11,5 @@ data class Country(
         val currencyCodes: List<String>? = listOf(),
         val numRegions: Int? = 0,
         val wikiData: String? = "",
-        val flagImageUri: String? = "")
+        val flagImageUri: String? = "",
+        var region: List<Region>?)

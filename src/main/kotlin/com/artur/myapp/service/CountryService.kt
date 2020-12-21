@@ -12,6 +12,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
+import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.stereotype.Service
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
@@ -46,13 +47,12 @@ class CountryService(private val countryRepository: CountryRepository,
                     runningJobs.set(listCodes.size)
                     logger?.info("Starting requests for  ${runningJobs.get() + 1}")
                     listCodes.forEach {
-                        if (!keyExists(it)) {
-                            if (type == RequestType.COUNTRY) {
-                                doCountryRequest(it)
-                            } else if (type == RequestType.REGION) {
-                                doRegionRequest(it)
-                            }
-
+                        val countryIdExists = keyExists(it)
+                        if (!countryIdExists && type == RequestType.COUNTRY) {
+                            doCountryRequest(it)
+                            Thread.sleep(2500)
+                        } else if (countryIdExists && type == RequestType.REGION) {
+                            doRegionRequest(it.toUpperCase())
                             Thread.sleep(2500)
                         }
                         val remaining = runningJobs.decrementAndGet()
@@ -82,7 +82,8 @@ class CountryService(private val countryRepository: CountryRepository,
                 currencyCodes = country.currencyCodes,
                 flagImageUri = country.flagImageUri,
                 numRegions = country.numRegions,
-                wikiData = country.wikiData
+                wikiData = country.wikiData,
+                region = listOf()
         )
     }
 
@@ -94,9 +95,13 @@ class CountryService(private val countryRepository: CountryRepository,
             val data = response.body!!.data
 
             logger?.info("Country $countryCode with ${data.size} and 1st is ${data[0].name}")
-//            val saved = countryRepository.save(buildCountryObj(data))
-//            logger?.info("persisted:  ${saved.id}")
+            val country = countryRepository.findById(countryCode).get()
+            country.region = data
+            val saved = countryRepository.save(country)
+            logger?.info("persisted:  ${saved.id}")
         } catch (error: HttpClientErrorException) {
+            logger?.error("Error requesting $countryCode. Msg: ${error.message}")
+        } catch (error: HttpMessageNotReadableException) {
             logger?.error("Error requesting $countryCode. Msg: ${error.message}")
         }
     }

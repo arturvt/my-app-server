@@ -16,7 +16,7 @@ class CountryController(private val countryRepository: CountryRepository, privat
     @GetMapping
     fun getAllCountries(): ResponseEntity<List<Country>> {
         val countries = countryRepository.findAll()
-        return ResponseEntity.ok(countries);
+        return ResponseEntity.ok(countries)
     }
 
     @GetMapping("/{id}")
@@ -25,7 +25,7 @@ class CountryController(private val countryRepository: CountryRepository, privat
         if (country.isEmpty) {
             return ResponseEntity.notFound().build()
         }
-        return ResponseEntity.ok(country.get());
+        return ResponseEntity.ok(country.get())
     }
 
     @PostMapping
@@ -38,7 +38,8 @@ class CountryController(private val countryRepository: CountryRepository, privat
                 currencyCodes = country.currencyCodes,
                 flagImageUri = country.flagImageUri,
                 numRegions = country.numRegions,
-                wikiData = country.wikiData
+                wikiData = country.wikiData,
+                region = listOf()
         ))
         return ResponseEntity.ok(saved)
     }

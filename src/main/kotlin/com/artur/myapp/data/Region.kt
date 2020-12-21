@@ -1,11 +1,14 @@
 package com.artur.myapp.data
 
-class RegionRequest(val data: List<Region>)
+import com.fasterxml.jackson.annotation.JsonProperty
+
+data class RegionRequest(
+        @JsonProperty("data")val data: List<Region>)
 
 data class Region(
-        val countryCode: String,
-        val name: String,
-        val isoCode: String,
-        val fipsCode: String,
-        val wikiDataId: String,
+        @JsonProperty("countryCode")val countryCode: String,
+        @JsonProperty("name") val name: String,
+        @JsonProperty("isoCode") val isoCode: String,
+        @JsonProperty("fipsCode") val fipsCode: String? = "",
+        @JsonProperty("wikiDataId") val wikiDataId: String? = "",
 )
