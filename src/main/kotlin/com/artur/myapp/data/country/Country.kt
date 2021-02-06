@@ -1,5 +1,6 @@
-package com.artur.myapp.data
+package com.artur.myapp.data.country
 
+import com.artur.myapp.data.region.Region
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 

@@ -1,11 +1,10 @@
 package com.artur.myapp.controller
 
 
-import com.artur.myapp.data.Country
-import com.artur.myapp.data.CountryRequest
+import com.artur.myapp.data.country.Country
+import com.artur.myapp.data.country.CountryRequest
 import com.artur.myapp.repository.CountryRepository
 import com.artur.myapp.service.CountryService
-import org.bson.types.ObjectId
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -31,7 +30,8 @@ class CountryController(private val countryRepository: CountryRepository, privat
     @PostMapping
     fun saveCountry(@RequestBody countryRequest: CountryRequest): ResponseEntity<Country> {
         val country = countryRequest.data
-        val saved = countryRepository.save(Country(
+        val saved = countryRepository.save(
+            Country(
                 id = country.code,
                 code =  country.code,
                 name = country.name,
@@ -40,7 +40,8 @@ class CountryController(private val countryRepository: CountryRepository, privat
                 numRegions = country.numRegions,
                 wikiData = country.wikiData,
                 region = listOf()
-        ))
+        )
+        )
         return ResponseEntity.ok(saved)
     }
 

@@ -1,9 +1,9 @@
 package com.artur.myapp.service
 
-import com.artur.myapp.data.Country
-import com.artur.myapp.data.CountryDataRequest
-import com.artur.myapp.data.CountryRequest
-import com.artur.myapp.data.RegionRequest
+import com.artur.myapp.data.country.Country
+import com.artur.myapp.data.country.CountryDataRequest
+import com.artur.myapp.data.country.CountryRequest
+import com.artur.myapp.data.region.RegionRequest
 import com.artur.myapp.enum.RequestType
 import com.artur.myapp.repository.CountryRepository
 import org.slf4j.Logger

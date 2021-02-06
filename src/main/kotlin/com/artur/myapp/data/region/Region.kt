@@ -1,9 +1,6 @@
-package com.artur.myapp.data
+package com.artur.myapp.data.region
 
 import com.fasterxml.jackson.annotation.JsonProperty
-
-data class RegionRequest(
-        @JsonProperty("data")val data: List<Region>)
 
 data class Region(
         @JsonProperty("countryCode")val countryCode: String,
