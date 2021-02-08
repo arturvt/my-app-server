@@ -1,10 +1,8 @@
 package com.artur.myapp
 
 import com.artur.myapp.data.country.Country
-import com.artur.myapp.enum.RequestType
 import com.artur.myapp.jobs.RegionsRequester
 import com.artur.myapp.repository.CountryRepository
-import com.artur.myapp.service.CountryService
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,27 +18,28 @@ class DbRunnerApp : CommandLineRunner {
     @Autowired
     private lateinit var countryRepository: CountryRepository
 
-    @Autowired
-    private lateinit var countryService: CountryService;
-
     override fun run(vararg args: String?) {
         logger.info("-------------------------------")
         logger.info("Runner Code")
         logger.info("#####")
         logger.info("Countries: ${countryRepository.count()}")
-        val country = countryRepository.findById("AM")
-        if (country.isPresent) {
-            checkCountryRegions(country.get())
+        val allCountries = countryRepository.findAll()
+        for (country in allCountries) {
+            checkCountryRegions(country)
         }
         logger.info("Done request")
 
     }
 
     fun checkCountryRegions(country: Country) {
-        println("Country regions: ${country.numRegions}  - stored: ${country.region?.size}")
-        val regions = RegionsRequester().startFetching(country.code)
-        country.region = regions
-        countryRepository.save(country)
+        val regionSize = country.region?.size ?: 0
+        println("[${country.id}] ${country.name} regions: ${country.numRegions}  - stored: $regionSize")
+        if (country.region.isNullOrEmpty() || country.numRegions > regionSize) {
+            println("Starting get regions for ${country.name}")
+            val regions = RegionsRequester().startFetching(country.code)
+            country.region = regions
+            countryRepository.save(country)
+        }
     }
 
 }

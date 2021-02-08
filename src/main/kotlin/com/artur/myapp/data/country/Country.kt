@@ -9,8 +9,13 @@ data class Country(
         @Id val id: String,
         val name: String,
         val code: String,
+        var capital: String = "unknown",
         val currencyCodes: List<String>? = listOf(),
-        val numRegions: Int? = 0,
+        val numRegions: Int = 0,
         val wikiData: String? = "",
         val flagImageUri: String? = "",
         var region: List<Region>?)
+
+@Document(collection = "countries")
+data class CountryId(@Id val id: String,
+                     val name: String)

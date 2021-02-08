@@ -14,13 +14,7 @@ class FetcherController(private val service: CountryService) {
 
     @PostMapping("/country")
     fun startCountryJob(@RequestBody countryKeys: List<String>): ResponseEntity<String> {
-        val response = service.jobSearchCountries(countryKeys, RequestType.COUNTRY)
-        return ResponseEntity.ok().body(response)
-    }
-
-    @PostMapping("/region")
-    fun startRegionJob(@RequestBody countryKeys: List<String>): ResponseEntity<String> {
-        val response = service.jobSearchCountries(countryKeys, RequestType.REGION)
+        val response = service.jobSearchCountries(countryKeys)
         return ResponseEntity.ok().body(response)
     }
 }

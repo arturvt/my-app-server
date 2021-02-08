@@ -7,6 +7,7 @@ import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse
+import kotlin.random.Random
 
 class RegionsRequester {
 
@@ -34,7 +35,16 @@ class RegionsRequester {
         val response = client.send(request, HttpResponse.BodyHandlers.ofString())
         val objectMapper = ObjectMapper()
 
-        return objectMapper.readValue(response.body(), RegionRequest::class.java)
+        if (response.statusCode() == 200) {
+            return objectMapper.readValue(response.body(), RegionRequest::class.java)
+        } else if (response.statusCode() == 429) {
+            println("Waiting longer time")
+            Thread.sleep(3000L)
+        }
+        println("Request error; Code: ${response.statusCode()}")
+        println("Message: ${response.body()}")
+        return null
+
 
     }
 
@@ -47,12 +57,15 @@ class RegionsRequester {
         println("Country: $countryKey - href: $href")
         val regionRequest = getRegionRequest(countryKey, href)
         if (regionRequest != null) {
-            print(regionRequest.metadata)
+            println(regionRequest.metadata)
             regions = regions.plus(regionRequest.data)
             val nextLink = regionRequest.links.find { it.rel == "next" }
             if (nextLink != null) {
-                println("Waiting 1.5 secs")
-                Thread.sleep(2000L)
+
+                val sleepSeconds = Random.nextInt(2, 10)
+                val longVal = sleepSeconds * 1500L
+                println("Waiting $sleepSeconds secs -> Long $longVal")
+                Thread.sleep(longVal)
                 performRequest(countryKey, nextLink.href)
             } else {
                 println("No more regions")
