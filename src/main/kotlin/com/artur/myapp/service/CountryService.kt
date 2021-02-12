@@ -1,10 +1,8 @@
 package com.artur.myapp.service
 
 import com.artur.myapp.data.country.Country
-import com.artur.myapp.data.country.CountryDataRequest
-import com.artur.myapp.data.country.CountryRequest
-import com.artur.myapp.data.region.RegionRequest
-import com.artur.myapp.enum.RequestType
+import com.artur.myapp.jobs.dto.CountryDataRequest
+import com.artur.myapp.jobs.dto.CountryRequest
 import com.artur.myapp.repository.CountryRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -12,7 +10,6 @@ import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
-import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.stereotype.Service
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
@@ -22,10 +19,12 @@ import kotlin.random.Random
 
 
 @Service
-class CountryService(private val countryRepository: CountryRepository,
-                     private val restTemplateBuilder: RestTemplateBuilder) {
+class CountryService(
+    private val countryRepository: CountryRepository,
+    private val restTemplateBuilder: RestTemplateBuilder
+) {
 
-    private lateinit var  httpEntity: HttpEntity<String>
+    private lateinit var httpEntity: HttpEntity<String>
     private val countriesUrl = "https://wft-geo-db.p.rapidapi.com/v1/geo/countries"
 
     init {
@@ -44,7 +43,7 @@ class CountryService(private val countryRepository: CountryRepository,
 
     fun jobSearchCountries(listCodes: List<String>): String {
         if (listCodes.isNotEmpty()) {
-            if(runningJobs.get() == 0) {
+            if (runningJobs.get() == 0) {
                 Thread {
                     runningJobs.set(listCodes.size)
                     logger?.info("Starting requests for  ${runningJobs.get() + 1}")
@@ -86,15 +85,15 @@ class CountryService(private val countryRepository: CountryRepository,
 
     private fun buildCountryObj(country: CountryDataRequest): Country {
         return Country(
-                id = country.code,
-                code =  country.code,
-                name = country.name,
-                capital = country.capital,
-                currencyCodes = country.currencyCodes,
-                flagImageUri = country.flagImageUri,
-                numRegions = country.numRegions,
-                wikiData = country.wikiData,
-                region = listOf()
+            id = country.code,
+            code = country.code,
+            name = country.name,
+            capital = country.capital,
+            currencyCodes = country.currencyCodes,
+            flagImageUri = country.flagImageUri,
+            numRegions = country.numRegions,
+            wikiData = country.wikiData,
+            region = listOf()
         )
     }
 

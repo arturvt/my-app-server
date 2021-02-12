@@ -2,7 +2,7 @@ package com.artur.myapp.controller
 
 
 import com.artur.myapp.data.country.Country
-import com.artur.myapp.data.country.CountryRequest
+import com.artur.myapp.jobs.dto.CountryRequest
 import com.artur.myapp.repository.CountryRepository
 import com.artur.myapp.service.CountryService
 import org.springframework.http.ResponseEntity

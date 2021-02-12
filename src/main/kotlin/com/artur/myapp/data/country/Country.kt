@@ -16,6 +16,3 @@ data class Country(
         val flagImageUri: String? = "",
         var region: List<Region>?)
 
-@Document(collection = "countries")
-data class CountryId(@Id val id: String,
-                     val name: String)

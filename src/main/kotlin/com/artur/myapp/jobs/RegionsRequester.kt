@@ -1,7 +1,7 @@
 package com.artur.myapp.jobs
 
 import com.artur.myapp.data.region.Region
-import com.artur.myapp.data.region.RegionRequest
+import com.artur.myapp.jobs.dto.RegionRequest
 import com.fasterxml.jackson.databind.ObjectMapper
 import java.net.URI
 import java.net.http.HttpClient

@@ -1,5 +1,6 @@
-package com.artur.myapp.data.region
+package com.artur.myapp.jobs.dto
 
+import com.artur.myapp.data.region.Region
 import com.fasterxml.jackson.annotation.JsonProperty
 
 data class RegionRequest(

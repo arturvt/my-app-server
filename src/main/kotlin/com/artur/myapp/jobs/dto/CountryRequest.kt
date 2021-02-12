@@ -1,4 +1,4 @@
-package com.artur.myapp.data.country
+package com.artur.myapp.jobs.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
