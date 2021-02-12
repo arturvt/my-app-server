@@ -2,7 +2,7 @@ package com.artur.myapp.controller
 
 
 import com.artur.myapp.data.country.Country
-import com.artur.myapp.jobs.dto.CountryRequest
+import com.artur.myapp.jobs.dto.CountryDetailRequest
 import com.artur.myapp.repository.CountryRepository
 import com.artur.myapp.service.CountryService
 import org.springframework.http.ResponseEntity
@@ -28,8 +28,8 @@ class CountryController(private val countryRepository: CountryRepository, privat
     }
 
     @PostMapping
-    fun saveCountry(@RequestBody countryRequest: CountryRequest): ResponseEntity<Country> {
-        val country = countryRequest.data
+    fun saveCountry(@RequestBody countryDetailRequest: CountryDetailRequest): ResponseEntity<Country> {
+        val country = countryDetailRequest.detailData
         val saved = countryRepository.save(
             Country(
                 id = country.code,

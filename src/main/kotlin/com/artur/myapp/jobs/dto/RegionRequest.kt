@@ -8,13 +8,3 @@ data class RegionRequest(
     @JsonProperty("links")val links: List<Link>,
     @JsonProperty("data")val data: List<Region>)
 
-
-data class Metadata(
-    @JsonProperty("currentOffset")val currentOffset: Int,
-    @JsonProperty("totalCount")val totalCount: Int,
-)
-
-data class Link(
-    @JsonProperty("rel")val rel: String,
-    @JsonProperty("href")val href: String,
-)

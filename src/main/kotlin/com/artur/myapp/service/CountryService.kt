@@ -1,8 +1,8 @@
 package com.artur.myapp.service
 
 import com.artur.myapp.data.country.Country
-import com.artur.myapp.jobs.dto.CountryDataRequest
-import com.artur.myapp.jobs.dto.CountryRequest
+import com.artur.myapp.jobs.dto.CountryDetailDataRequest
+import com.artur.myapp.jobs.dto.CountryDetailRequest
 import com.artur.myapp.repository.CountryRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -83,16 +83,16 @@ class CountryService(
         return "List is empty"
     }
 
-    private fun buildCountryObj(country: CountryDataRequest): Country {
+    private fun buildCountryObj(countryDetail: CountryDetailDataRequest): Country {
         return Country(
-            id = country.code,
-            code = country.code,
-            name = country.name,
-            capital = country.capital,
-            currencyCodes = country.currencyCodes,
-            flagImageUri = country.flagImageUri,
-            numRegions = country.numRegions,
-            wikiData = country.wikiData,
+            id = countryDetail.code,
+            code = countryDetail.code,
+            name = countryDetail.name,
+            capital = countryDetail.capital,
+            currencyCodes = countryDetail.currencyCodes,
+            flagImageUri = countryDetail.flagImageUri,
+            numRegions = countryDetail.numRegions,
+            wikiData = countryDetail.wikiData,
             region = listOf()
         )
     }
@@ -102,8 +102,8 @@ class CountryService(
         val url = "$countriesUrl/${countryCode}"
 
         try {
-            val response = restTemplate.exchange(url, HttpMethod.GET, httpEntity, CountryRequest::class.java)
-            val data = response.body!!.data
+            val response = restTemplate.exchange(url, HttpMethod.GET, httpEntity, CountryDetailRequest::class.java)
+            val data = response.body!!.detailData
 
             logger?.info("name: ${data.name} regions: ${data.numRegions}")
             return buildCountryObj(data)
