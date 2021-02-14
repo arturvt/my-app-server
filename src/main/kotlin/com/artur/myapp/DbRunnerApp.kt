@@ -1,7 +1,10 @@
 package com.artur.myapp
 
-import com.artur.myapp.data.country.Country
+import com.artur.myapp.data.country.CountryFull
 import com.artur.myapp.jobs.RegionsRequester
+import com.artur.myapp.jobs.performCountryFullRequest
+import com.artur.myapp.jobs.performRequest
+import com.artur.myapp.repository.CountryFullRepository
 import com.artur.myapp.repository.CountryRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -17,33 +20,62 @@ class DbRunnerApp : CommandLineRunner {
 
     @Autowired
     private lateinit var countryRepository: CountryRepository
+    @Autowired
+    private lateinit var countryFullRepository: CountryFullRepository
 
     override fun run(vararg args: String?) {
         logger.info("-------------------------------")
         logger.info("Runner Code")
         logger.info("#####")
-        logger.info("Countries: ${countryRepository.count()}")
-        val allCountries = countryRepository.findAll()
-        for (country in allCountries) {
-            checkCountryRegions(country)
-        }
-        logger.info("Done request")
+        fillRegions()
 
+        logger.info("Done request")
     }
 
-    fun checkCountryRegions(country: Country) {
-        val regionSize = country.region?.size ?: 0
-        println("[${country.id}] ${country.name} regions: ${country.numRegions}  - stored: $regionSize")
-        if (country.region.isNullOrEmpty() || country.numRegions > regionSize) {
-            println("Starting get regions for ${country.name}")
-            val regions = RegionsRequester().startFetching(country.code)
-            country.region = regions
-            countryRepository.save(country)
+    fun fillCountries() {
+        for(i in 0..50) {
+            Thread.sleep(1500)
+            logger.info("Page: $i")
+            val countryRequest = performRequest(i)
+            if (countryRequest != null) {
+                countryRepository.saveAll(countryRequest.data)
+            } else {
+                println("Stopped requests in page: $i")
+            }
         }
+    }
+
+    fun fillFullCountry() {
+        val allCountries = countryRepository.findAll()
+        allCountries.forEachIndexed { index, country ->
+            println("[$index][${country.id}] ${country.name}")
+            Thread.sleep(1300)
+            val countryFullReq = performCountryFullRequest(country.id)
+            if (countryFullReq != null) {
+                countryFullRepository.save(countryFullReq.data)
+            }
+        }
+    }
+
+    fun fillRegions() {
+        logger.info("Countries: ${countryFullRepository.count()}")
+        val allCountries = countryFullRepository.findAll()
+        for (countryFull in allCountries) {
+            Thread.sleep(1300)
+            val regionSize = countryFull.region?.size ?: 0
+            println("[${countryFull.id}] ${countryFull.name} regions: ${countryFull.numRegions}  - stored: $regionSize")
+            if (regionSize > 0 && countryFull.region.isNullOrEmpty() || countryFull.numRegions > regionSize) {
+                println("Starting get regions for ${countryFull.name}")
+                val regions = RegionsRequester().startFetching(countryFull.id)
+                countryFull.region = regions
+                countryFullRepository.save(countryFull)
+            }
+        }
+
     }
 
 }
 
-fun main(args: Array<String>) {
+fun main() {
     SpringApplication.run(DbRunnerApp::class.java)
 }

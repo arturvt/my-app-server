@@ -1,14 +1,8 @@
 package com.artur.myapp.jobs.dto
 
+import com.artur.myapp.data.country.CountryFull
 import com.fasterxml.jackson.annotation.JsonProperty
 
-data class CountryDetailDataRequest(
-        @JsonProperty("name") val name: String,
-        @JsonProperty("code") val code: String,
-        @JsonProperty("capital") val capital: String,
-        @JsonProperty("currencyCodes") val currencyCodes: List<String>? = listOf(),
-        @JsonProperty("numRegions") val numRegions: Int = 0,
-        @JsonProperty("wikiData") val wikiData: String? = "",
-        @JsonProperty("flagImageUri") val flagImageUri: String? = "")
-
-data class CountryDetailRequest(@JsonProperty("data")  val detailData: CountryDetailDataRequest)
+data class CountryDetailRequest(
+    @JsonProperty("data") val data: CountryFull
+)

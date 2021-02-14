@@ -59,11 +59,10 @@ class RegionsRequester {
         if (regionRequest != null) {
             println(regionRequest.metadata)
             regions = regions.plus(regionRequest.data)
-            val nextLink = regionRequest.links.find { it.rel == "next" }
+            val nextLink = regionRequest.links?.find { it.rel == "next" }
             if (nextLink != null) {
-
-                val sleepSeconds = Random.nextInt(2, 10)
-                val longVal = sleepSeconds * 1500L
+                val sleepSeconds = Random.nextInt(1, 3)
+                val longVal = 1500L
                 println("Waiting $sleepSeconds secs -> Long $longVal")
                 Thread.sleep(longVal)
                 performRequest(countryKey, nextLink.href)
@@ -77,7 +76,7 @@ class RegionsRequester {
 }
 
 
-fun main(args: Array<String>) {
+fun main() {
     print("UO")
 //    RegionsRequester().performRequest("AM", null)
     val list = RegionsRequester().startFetching("BR")
