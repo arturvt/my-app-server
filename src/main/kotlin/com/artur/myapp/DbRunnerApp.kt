@@ -1,11 +1,12 @@
 package com.artur.myapp
 
-import com.artur.myapp.data.country.CountryFull
+import com.artur.myapp.data.region.CountryRegion
 import com.artur.myapp.jobs.RegionsRequester
 import com.artur.myapp.jobs.performCountryFullRequest
 import com.artur.myapp.jobs.performRequest
 import com.artur.myapp.repository.CountryFullRepository
 import com.artur.myapp.repository.CountryRepository
+import com.artur.myapp.repository.RegionFullRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,12 +23,14 @@ class DbRunnerApp : CommandLineRunner {
     private lateinit var countryRepository: CountryRepository
     @Autowired
     private lateinit var countryFullRepository: CountryFullRepository
+    @Autowired
+    private lateinit var regionFullRepository: RegionFullRepository
 
     override fun run(vararg args: String?) {
         logger.info("-------------------------------")
         logger.info("Runner Code")
         logger.info("#####")
-        fillRegions()
+//        fillFullRegions()  // Último País que parou é CH
 
         logger.info("Done request")
     }
@@ -55,6 +58,34 @@ class DbRunnerApp : CommandLineRunner {
                 countryFullRepository.save(countryFullReq.data)
             }
         }
+    }
+
+    fun fillFullRegions() {
+
+        val allCountries = countryFullRepository.findAll()
+        allCountries.forEach { country ->
+            logger.info("Full regions start: ${country.name}")
+            val optionalCountryRegion = regionFullRepository.findById(country.id)
+            val countryRegion: CountryRegion;
+            if (optionalCountryRegion.isEmpty) {
+                countryRegion = CountryRegion(country.id, listOf())
+            } else {
+                println("Already on the list")
+                return@forEach
+            }
+
+            country.region?.forEach {
+                logger.info("[$country] [${it.isoCode}] ${it.name} ");
+                Thread.sleep(1300)
+                val fullRegionRequest = RegionsRequester().performRegionFullRequest(it.countryCode, it.isoCode)
+                println(fullRegionRequest!!.data.capital)
+                countryRegion.regions = countryRegion.regions + fullRegionRequest.data
+                regionFullRepository.save(countryRegion)
+            }
+        }
+
+
+
     }
 
     fun fillRegions() {
