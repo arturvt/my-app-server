@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
-@RequestMapping("/region")
+@RequestMapping("/api/region")
 class RegionController(val regionFullRepository: RegionFullRepository) {
 
     @GetMapping("/{country}")

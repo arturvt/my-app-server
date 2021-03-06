@@ -1,4 +1,4 @@
-package com.artur.myapp.repository
+package com.artur.myapp.repository.country
 
 import com.artur.myapp.data.country.CountryFull
 import org.bson.types.ObjectId

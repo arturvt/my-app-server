@@ -4,9 +4,9 @@ import com.artur.myapp.data.region.CountryRegion
 import com.artur.myapp.jobs.RegionsRequester
 import com.artur.myapp.jobs.performCountryFullRequest
 import com.artur.myapp.jobs.performRequest
-import com.artur.myapp.repository.CountryFullRepository
-import com.artur.myapp.repository.CountryRepository
 import com.artur.myapp.repository.RegionFullRepository
+import com.artur.myapp.repository.country.CountryFullRepository
+import com.artur.myapp.repository.country.CountryRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,10 +21,13 @@ class DbRunnerApp : CommandLineRunner {
 
     @Autowired
     private lateinit var countryRepository: CountryRepository
+
     @Autowired
     private lateinit var countryFullRepository: CountryFullRepository
+
     @Autowired
     private lateinit var regionFullRepository: RegionFullRepository
+
 
     override fun run(vararg args: String?) {
         logger.info("-------------------------------")
@@ -36,7 +39,7 @@ class DbRunnerApp : CommandLineRunner {
     }
 
     fun fillCountries() {
-        for(i in 0..50) {
+        for (i in 0..50) {
             Thread.sleep(1500)
             logger.info("Page: $i")
             val countryRequest = performRequest(i)
@@ -66,7 +69,7 @@ class DbRunnerApp : CommandLineRunner {
         allCountries.forEach { country ->
             logger.info("Full regions start: ${country.name}")
             val optionalCountryRegion = regionFullRepository.findById(country.id)
-            val countryRegion: CountryRegion;
+            val countryRegion: CountryRegion
             if (optionalCountryRegion.isEmpty) {
                 countryRegion = CountryRegion(country.id, listOf())
             } else {
@@ -75,7 +78,7 @@ class DbRunnerApp : CommandLineRunner {
             }
 
             country.region?.forEach {
-                logger.info("[$country] [${it.isoCode}] ${it.name} ");
+                logger.info("[$country] [${it.isoCode}] ${it.name} ")
                 Thread.sleep(1300)
                 val fullRegionRequest = RegionsRequester().performRegionFullRequest(it.countryCode, it.isoCode)
                 println(fullRegionRequest!!.data.capital)
@@ -83,7 +86,6 @@ class DbRunnerApp : CommandLineRunner {
                 regionFullRepository.save(countryRegion)
             }
         }
-
 
 
     }
