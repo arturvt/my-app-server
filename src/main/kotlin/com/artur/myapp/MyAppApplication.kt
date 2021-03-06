@@ -2,13 +2,11 @@ package com.artur.myapp
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
-import org.springframework.context.annotation.ComponentScan
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 
 @SpringBootApplication
-@EnableMongoRepositories("com.artur.myapp.repository")
-class MyAppApplication
+class MyAppApplication : SpringBootServletInitializer()
 
 fun main(args: Array<String>) {
-	runApplication<MyAppApplication>(*args)
+    runApplication<MyAppApplication>(*args)
 }

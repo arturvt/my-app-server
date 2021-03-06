@@ -12,6 +12,6 @@ class RegionController(val regionFullRepository: RegionFullRepository) {
 
     @GetMapping("/{country}")
     fun getRegions(@PathVariable("country") countryCode: String): ResponseEntity<Optional<CountryRegion>> {
-        return ResponseEntity.ok(regionFullRepository.findById(countryCode));
+        return ResponseEntity.ok(regionFullRepository.findById(countryCode.toUpperCase()));
     }
 }

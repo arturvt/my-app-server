@@ -54,11 +54,3 @@ fun performRequest(page: Int): CountryRequest? {
     println("CountryRequest page: $page")
     return doCountryRequest(page)
 }
-
-fun main() {
-    println("Country Requester")
-    val countryRequest: CountryRequest? =  performRequest(3)
-    countryRequest?.data?.forEach {
-        println("${it.id} - ${it.name}")
-    }
-}

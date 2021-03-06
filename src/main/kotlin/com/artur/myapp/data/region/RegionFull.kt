@@ -21,21 +21,3 @@ data class RegionFull(
     @JsonProperty("capital") val capital: String?,
 )
 
-fun main() {
-    println("Teste")
-    val str = " {\n" +
-            "        \"capital\": \"Montgomery\",\n" +
-            "        \"countryCode\": \"US\",\n" +
-            "        \"fipsCode\": \"01\",\n" +
-            "        \"isoCode\": \"AL\",\n" +
-            "        \"name\": \"Alabama\",\n" +
-            "        \"numCities\": 1051,\n" +
-            "        \"wikiDataId\": \"Q173\"\n" +
-            "    }"
-//    val reg = ObjectMapper().readValue(str, RegionFull::class.java)
-    val reg = ObjectMapper()
-        .readValue(str, RegionFull::class.java)
-    println(reg)
-    val countryRegion = CountryRegion("US", listOf(reg))
-    println(countryRegion)
-}
