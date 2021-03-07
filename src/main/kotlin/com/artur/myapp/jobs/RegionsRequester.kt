@@ -4,10 +4,6 @@ import com.artur.myapp.data.region.Region
 import com.artur.myapp.jobs.dto.RegionDetailRequest
 import com.artur.myapp.jobs.dto.RegionRequest
 import com.fasterxml.jackson.databind.ObjectMapper
-import java.net.URI
-import java.net.http.HttpClient
-import java.net.http.HttpRequest
-import java.net.http.HttpResponse
 import kotlin.random.Random
 
 class RegionsRequester {
@@ -88,13 +84,4 @@ class RegionsRequester {
             println("No Region!")
         }
     }
-}
-
-
-fun main() {
-    print("UO")
-//    RegionsRequester().performRequest("AM", null)
-    val list = RegionsRequester().startFetching("BR")
-    println("Finish request. Total: ${list.size}")
-//    RegionsRequester().performRequest("BR", null)
 }
