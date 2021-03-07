@@ -1,12 +1,6 @@
-package com.artur.myapp.data.region
+package com.artur.myapp.jobs.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
-
-data class RegionRequest(
-    @JsonProperty("metadata")val metadata: Metadata,
-    @JsonProperty("links")val links: List<Link>,
-    @JsonProperty("data")val data: List<Region>)
-
 
 data class Metadata(
     @JsonProperty("currentOffset")val currentOffset: Int,

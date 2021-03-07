@@ -1,21 +1,13 @@
 package com.artur.myapp.data.country
 
-import com.artur.myapp.data.region.Region
+import com.fasterxml.jackson.annotation.JsonProperty
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 
 @Document(collection = "countries")
-data class Country(
-        @Id val id: String,
-        val name: String,
-        val code: String,
-        var capital: String = "unknown",
-        val currencyCodes: List<String>? = listOf(),
-        val numRegions: Int = 0,
-        val wikiData: String? = "",
-        val flagImageUri: String? = "",
-        var region: List<Region>?)
-
-@Document(collection = "countries")
-data class CountryId(@Id val id: String,
-                     val name: String)
+class Country(
+    @Id @JsonProperty("code") val id: String,
+    @JsonProperty("name") val name: String,
+    @JsonProperty("currencyCodes") val currencyCodes: List<String>? = listOf(),
+    @JsonProperty("wikiDataId") val wikiData: String? = "",
+)
