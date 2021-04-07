@@ -19,7 +19,7 @@ class CountryController(private val countryService: CountryService) {
         @RequestParam("items") offSet: Int?
     ): ResponseEntity<Page<Country>> {
         val page = paramPage ?: 0
-        val numItems = offSet ?: 15
+        val numItems = offSet ?: 25
 
         val countriesList = if (sorted != null) {
             countryService.getAllPagedAndSorted(sorted, page, numItems)
@@ -35,10 +35,6 @@ class CountryController(private val countryService: CountryService) {
         return ResponseEntity.ok(countryService.getAll())
     }
 
-    //TODO: usar o serviceo no lugar do repositorio;
-    // Criar rota get all country/code apenas. Sem detalhes;
-    // Assim, a busca funciona.
-    // Usar os detalhes parciais dos countries na tela de paginacao.
     @GetMapping("/{id}")
     fun getById(@PathVariable("id") id: String): ResponseEntity<CountryFull> {
         val country = countryService.getCountryDetails(id.toUpperCase())
