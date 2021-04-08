@@ -21,18 +21,18 @@ class CountryService(
 
     private val logger: Logger = LoggerFactory.getLogger(CountryService::class.java)
 
-    fun getAllPaged(page: Int, numItems: Int): Page<Country> {
-        return countryRepository.findAll(PageRequest.of(page, numItems))
+    fun getAllPaged(page: Int, numItems: Int): Page<CountryFull> {
+        return countryFullRepository.findAll(PageRequest.of(page, numItems))
     }
 
-    fun getAllPagedAndSorted(sorted: String, page: Int, numItems: Int): Page<Country> {
+    fun getAllPagedAndSorted(sorted: String, page: Int, numItems: Int): Page<CountryFull> {
         val sortDirection = if (sorted.toLowerCase().contains("asc")) {
             Sort.Direction.ASC
         } else {
             Sort.Direction.DESC
         }
         val sort = Sort.by(sortDirection, "name")
-        return countryRepository.findAll(PageRequest.of(page, numItems, sort))
+        return countryFullRepository.findAll(PageRequest.of(page, numItems, sort))
     }
 
     fun getCountryDetails(code: String): Optional<CountryFull> {

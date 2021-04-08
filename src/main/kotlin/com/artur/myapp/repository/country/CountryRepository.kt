@@ -5,5 +5,4 @@ import org.springframework.data.mongodb.repository.MongoRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface CountryRepository : MongoRepository<Country, String> {
-}
+interface CountryRepository : MongoRepository<Country, String>

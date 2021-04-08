@@ -17,9 +17,9 @@ class CountryController(private val countryService: CountryService) {
         @RequestParam("sort") sorted: String?,
         @RequestParam("page") paramPage: Int?,
         @RequestParam("items") offSet: Int?
-    ): ResponseEntity<Page<Country>> {
+    ): ResponseEntity<Page<CountryFull>> {
         val page = paramPage ?: 0
-        val numItems = offSet ?: 25
+        val numItems = offSet ?: 10
 
         val countriesList = if (sorted != null) {
             countryService.getAllPagedAndSorted(sorted, page, numItems)
